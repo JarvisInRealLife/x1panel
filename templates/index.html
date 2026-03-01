@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X1 — Intelligence System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Glitch Canvas Background (dimmed) -->
+    <div id="glitch-bg"></div>
+
+    <!-- Dark overlay so UI stays readable -->
+    <div class="content-overlay" aria-hidden="true"></div>
+
+    <!-- Scanline Overlay -->
+    <div class="scanlines"></div>
+
+    <!-- ===================== LOGIN VIEW ===================== -->
+    <div id="view-login" class="view active">
+        <div class="login-container">
+            <div class="login-card glass-card">
+                <div class="login-header">
+                    <h1 class="glitch-text" data-text="X1">X1</h1>
+                    <div class="login-subtitle">
+                        <span class="typing-line">SYSTEM ACCESS REQUIRED</span>
+                    </div>
+                    <div class="login-line"></div>
+                </div>
+                <form id="login-form" autocomplete="off">
+                    <div class="input-group">
+                        <i class="fas fa-user-secret"></i>
+                        <input type="text" id="login-username" placeholder="ENTER USERNAME" spellcheck="false">
+                        <span class="input-line"></span>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="login-password" placeholder="ENTER PASSWORD">
+                        <span class="input-line"></span>
+                    </div>
+                    <button type="submit" class="btn-primary btn-glow">
+                        <i class="fas fa-terminal"></i>
+                        <span>ACCESS SYSTEM</span>
+                    </button>
+                    <p id="login-error" class="error-text"></p>
+                </form>
+                <div class="login-footer">
+                    <span class="blink-cursor">_</span> ENCRYPTED CONNECTION
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== MAIN APP VIEW ===================== -->
+    <div id="view-app" class="view">
+
+        <!-- Navbar -->
+        <nav class="navbar glass-nav">
+            <div class="nav-brand" id="nav-brand">
+                <span class="brand-x">X</span><span class="brand-1">1</span>
+            </div>
+            <div class="nav-links" id="nav-links">
+                <a href="#" data-page="dashboard" class="nav-link active">
+                    <i class="fas fa-th-large"></i> <span>Dashboard</span>
+                </a>
+                <a href="#" data-page="mobile" class="nav-link">
+                    <i class="fas fa-mobile-alt"></i> <span>Mobile Trace</span>
+                </a>
+                <a href="#" data-page="id" class="nav-link">
+                    <i class="fas fa-fingerprint"></i> <span>ID Trace</span>
+                </a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-logout" id="btn-logout" title="Logout">
+                    <i class="fas fa-power-off"></i>
+                </button>
+            </div>
+            <button class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+
+        <!-- ===== Dashboard Page ===== -->
+        <div id="page-dashboard" class="page active">
+            <div class="dashboard-container">
+                <div class="section-header glass-box">
+                    <h2 class="section-title"><i class="fas fa-crosshairs"></i> SELECT OPERATION</h2>
+                    <p class="section-subtitle">Choose an intelligence extraction method</p>
+                </div>
+                <div class="dashboard-cards">
+                    <div class="dash-card glass-card" data-goto="mobile">
+                        <div class="dash-card-glow"></div>
+                        <div class="dash-card-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>MOBILE TRACE</h3>
+                        <p>Extract personal data linked to any mobile number</p>
+                        <div class="dash-card-footer">
+                            <span class="status-dot"></span> ONLINE
+                            <i class="fas fa-arrow-right dash-arrow"></i>
+                        </div>
+                    </div>
+                    <div class="dash-card glass-card" data-goto="id">
+                        <div class="dash-card-glow"></div>
+                        <div class="dash-card-icon">
+                            <i class="fas fa-fingerprint"></i>
+                        </div>
+                        <h3>ID TRACE</h3>
+                        <p>Extract personal data linked to any ID number</p>
+                        <div class="dash-card-footer">
+                            <span class="status-dot"></span> ONLINE
+                            <i class="fas fa-arrow-right dash-arrow"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== Mobile Lookup Page ===== -->
+        <div id="page-mobile" class="page">
+            <div class="lookup-container">
+                <button class="btn-back" data-goto="dashboard">
+                    <i class="fas fa-chevron-left"></i> BACK
+                </button>
+                <div class="lookup-card glass-card">
+                    <div class="lookup-header">
+                        <div class="lookup-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <div>
+                            <h2>MOBILE TRACE</h2>
+                            <p>Enter a 10-digit mobile number to trace</p>
+                        </div>
+                    </div>
+                    <form id="mobile-form">
+                        <div class="input-group large">
+                            <i class="fas fa-phone"></i>
+                            <input type="text" id="mobile-input" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" spellcheck="false">
+                            <span class="input-line"></span>
+                        </div>
+                        <button type="submit" class="btn-primary btn-glow">
+                            <i class="fas fa-crosshairs"></i>
+                            <span>INITIATE TRACE</span>
+                        </button>
+                    </form>
+                </div>
+                <div id="mobile-results" class="results-container"></div>
+            </div>
+        </div>
+
+        <!-- ===== ID Lookup Page ===== -->
+        <div id="page-id" class="page">
+            <div class="lookup-container">
+                <button class="btn-back" data-goto="dashboard">
+                    <i class="fas fa-chevron-left"></i> BACK
+                </button>
+                <div class="lookup-card glass-card">
+                    <div class="lookup-header">
+                        <div class="lookup-icon"><i class="fas fa-fingerprint"></i></div>
+                        <div>
+                            <h2>ID TRACE</h2>
+                            <p>Enter a 12-digit ID number to trace</p>
+                        </div>
+                    </div>
+                    <form id="id-form">
+                        <div class="input-group large">
+                            <i class="fas fa-id-card"></i>
+                            <input type="text" id="id-input" placeholder="XXXXXXXXXXXX" maxlength="12" spellcheck="false">
+                            <span class="input-line"></span>
+                        </div>
+                        <button type="submit" class="btn-primary btn-glow">
+                            <i class="fas fa-crosshairs"></i>
+                            <span>INITIATE TRACE</span>
+                        </button>
+                    </form>
+                </div>
+                <div id="id-results" class="results-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== LOADING OVERLAY ===================== -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-terminal glass-card">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="tdot red"></span>
+                    <span class="tdot yellow"></span>
+                    <span class="tdot green"></span>
+                </div>
+                <span class="terminal-title">X1 TRACE PROTOCOL</span>
+            </div>
+            <div class="terminal-body" id="terminal-body"></div>
+            <div class="terminal-footer">
+                <div class="progress-track">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <span class="progress-text" id="progress-text">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/glitch.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

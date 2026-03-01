@@ -1,0 +1,21 @@
+# Render Blueprint: deploy X1 Panel as a Web Service
+# Dashboard: https://dashboard.render.com → New → Web Service → Connect repo
+# Or use this file: New → Blueprint → Connect repo and select render.yaml
+
+services:
+  - type: web
+    name: x1panel
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: X1_USERNAME
+        sync: false
+      - key: X1_PASSWORD
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: API_BASE_URL
+        sync: false
