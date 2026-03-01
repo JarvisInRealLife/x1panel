@@ -44,7 +44,7 @@ html, body {
     overflow: hidden;
 }
 #glitch-bg canvas {
-    opacity: 0.3;
+    opacity: 0.48;
 }
 
 .content-overlay {

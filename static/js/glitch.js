@@ -4,8 +4,8 @@ class LetterGlitch {
             ? document.querySelector(container) : container;
         if (!this.container) return;
 
-        this.glitchColors = options.glitchColors || ['#062010', '#0d3d1a', '#083318'];
-        this.glitchSpeed = options.glitchSpeed || 60;
+        this.glitchColors = options.glitchColors || ['#062010', '#0d3d1a', '#083318', '#0a4d20'];
+        this.glitchSpeed = options.glitchSpeed || 45;
         this.smooth = options.smooth !== undefined ? options.smooth : true;
         this.outerVignette = options.outerVignette !== undefined ? options.outerVignette : true;
         this.characters = options.characters || 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01!@#$%&*{}[]<>/\\|~^';
@@ -110,7 +110,7 @@ class LetterGlitch {
     }
 
     update() {
-        const count = Math.max(1, Math.floor(this.letters.length * (this.isMobile ? 0.02 : 0.05)));
+        const count = Math.max(1, Math.floor(this.letters.length * (this.isMobile ? 0.03 : 0.07)));
         for (let i = 0; i < count; i++) {
             const idx = Math.floor(Math.random() * this.letters.length);
             this.letters[idx].char = this.getRandomChar();
@@ -133,8 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const bg = document.getElementById('glitch-bg');
     if (bg) {
         new LetterGlitch(bg, {
-            glitchColors: ['#062010', '#0d3d1a', '#083318'],
-            glitchSpeed: 60,
+            glitchColors: ['#062010', '#0d3d1a', '#083318', '#0a4d20'],
+            glitchSpeed: 45,
             smooth: true,
             outerVignette: true,
             characters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ01!@#$%&*{}[]<>/\\|~^'
