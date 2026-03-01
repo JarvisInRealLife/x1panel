@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>X1 — Intelligence System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
@@ -11,36 +11,27 @@
 </head>
 <body>
 
-    <!-- Glitch Canvas Background (dimmed) -->
     <div id="glitch-bg"></div>
-
-    <!-- Dark overlay so UI stays readable -->
     <div class="content-overlay" aria-hidden="true"></div>
-
-    <!-- Scanline Overlay -->
     <div class="scanlines"></div>
 
-    <!-- ===================== LOGIN VIEW ===================== -->
+    <!-- LOGIN VIEW -->
     <div id="view-login" class="view active">
         <div class="login-container">
-            <div class="login-card glass-card">
+            <div class="login-card">
                 <div class="login-header">
                     <h1 class="glitch-text" data-text="X1">X1</h1>
-                    <div class="login-subtitle">
-                        <span class="typing-line">SYSTEM ACCESS REQUIRED</span>
-                    </div>
+                    <div class="login-subtitle">SYSTEM ACCESS REQUIRED</div>
                     <div class="login-line"></div>
                 </div>
                 <form id="login-form" autocomplete="off">
                     <div class="input-group">
                         <i class="fas fa-user-secret"></i>
-                        <input type="text" id="login-username" placeholder="ENTER USERNAME" spellcheck="false">
-                        <span class="input-line"></span>
+                        <input type="text" id="login-username" placeholder="ENTER USERNAME" spellcheck="false" autocomplete="off">
                     </div>
                     <div class="input-group">
                         <i class="fas fa-key"></i>
-                        <input type="password" id="login-password" placeholder="ENTER PASSWORD">
-                        <span class="input-line"></span>
+                        <input type="password" id="login-password" placeholder="ENTER PASSWORD" autocomplete="off">
                     </div>
                     <button type="submit" class="btn-primary btn-glow">
                         <i class="fas fa-terminal"></i>
@@ -55,11 +46,10 @@
         </div>
     </div>
 
-    <!-- ===================== MAIN APP VIEW ===================== -->
+    <!-- MAIN APP VIEW -->
     <div id="view-app" class="view">
 
-        <!-- Navbar -->
-        <nav class="navbar glass-nav">
+        <nav class="navbar">
             <div class="nav-brand" id="nav-brand">
                 <span class="brand-x">X</span><span class="brand-1">1</span>
             </div>
@@ -74,17 +64,12 @@
                     <i class="fas fa-fingerprint"></i> <span>ID Trace</span>
                 </a>
             </div>
-            <div class="nav-actions">
-                <button class="btn-logout" id="btn-logout" title="Logout">
-                    <i class="fas fa-power-off"></i>
-                </button>
-            </div>
-            <button class="hamburger" id="hamburger">
+            <button class="hamburger" id="hamburger" aria-label="Menu">
                 <span></span><span></span><span></span>
             </button>
         </nav>
 
-        <!-- ===== Dashboard Page ===== -->
+        <!-- Dashboard -->
         <div id="page-dashboard" class="page active">
             <div class="dashboard-container">
                 <div class="section-header glass-box">
@@ -94,9 +79,7 @@
                 <div class="dashboard-cards">
                     <div class="dash-card glass-card" data-goto="mobile">
                         <div class="dash-card-glow"></div>
-                        <div class="dash-card-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
+                        <div class="dash-card-icon"><i class="fas fa-mobile-alt"></i></div>
                         <h3>MOBILE TRACE</h3>
                         <p>Extract personal data linked to any mobile number</p>
                         <div class="dash-card-footer">
@@ -106,9 +89,7 @@
                     </div>
                     <div class="dash-card glass-card" data-goto="id">
                         <div class="dash-card-glow"></div>
-                        <div class="dash-card-icon">
-                            <i class="fas fa-fingerprint"></i>
-                        </div>
+                        <div class="dash-card-icon"><i class="fas fa-fingerprint"></i></div>
                         <h3>ID TRACE</h3>
                         <p>Extract personal data linked to any ID number</p>
                         <div class="dash-card-footer">
@@ -120,7 +101,7 @@
             </div>
         </div>
 
-        <!-- ===== Mobile Lookup Page ===== -->
+        <!-- Mobile Lookup -->
         <div id="page-mobile" class="page">
             <div class="lookup-container">
                 <button class="btn-back" data-goto="dashboard">
@@ -137,8 +118,7 @@
                     <form id="mobile-form">
                         <div class="input-group large">
                             <i class="fas fa-phone"></i>
-                            <input type="text" id="mobile-input" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" spellcheck="false">
-                            <span class="input-line"></span>
+                            <input type="tel" id="mobile-input" placeholder="9876543210" maxlength="10" inputmode="numeric" spellcheck="false">
                         </div>
                         <button type="submit" class="btn-primary btn-glow">
                             <i class="fas fa-crosshairs"></i>
@@ -150,7 +130,7 @@
             </div>
         </div>
 
-        <!-- ===== ID Lookup Page ===== -->
+        <!-- ID Lookup -->
         <div id="page-id" class="page">
             <div class="lookup-container">
                 <button class="btn-back" data-goto="dashboard">
@@ -167,8 +147,7 @@
                     <form id="id-form">
                         <div class="input-group large">
                             <i class="fas fa-id-card"></i>
-                            <input type="text" id="id-input" placeholder="XXXXXXXXXXXX" maxlength="12" spellcheck="false">
-                            <span class="input-line"></span>
+                            <input type="text" id="id-input" placeholder="XXXXXXXXXXXX" maxlength="12" inputmode="numeric" spellcheck="false">
                         </div>
                         <button type="submit" class="btn-primary btn-glow">
                             <i class="fas fa-crosshairs"></i>
@@ -181,9 +160,9 @@
         </div>
     </div>
 
-    <!-- ===================== LOADING OVERLAY ===================== -->
+    <!-- LOADING OVERLAY -->
     <div id="loading-overlay" class="loading-overlay">
-        <div class="loading-terminal glass-card">
+        <div class="loading-terminal">
             <div class="terminal-header">
                 <div class="terminal-dots">
                     <span class="tdot red"></span>

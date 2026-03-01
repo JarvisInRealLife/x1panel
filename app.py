@@ -10,6 +10,11 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', os.urandom(24).hex())
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_PERMANENT'] = False
+
+if os.getenv('RENDER') or os.getenv('PRODUCTION'):
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['PREFERRED_URL_SCHEME'] = 'https'
 
 API_BASE_URL = os.getenv('API_BASE_URL')
 API_KEY = os.getenv('API_KEY')
@@ -32,6 +37,9 @@ def index():
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
+    if not data:
+        return jsonify({'error': 'Invalid request'}), 400
+
     username = data.get('username', '')
     password = data.get('password', '')
 
@@ -39,9 +47,10 @@ def login():
     env_password = os.getenv('X1_PASSWORD')
 
     if not env_username or not env_password:
-        return jsonify({'error': 'System credentials not configured. Update .env file.'}), 500
+        return jsonify({'error': 'System credentials not configured.'}), 500
 
     if username == env_username and password == env_password:
+        session.clear()
         session['logged_in'] = True
         session.permanent = False
         return jsonify({'success': True})
@@ -66,6 +75,8 @@ def check_auth():
 @login_required
 def lookup_mobile():
     data = request.get_json()
+    if not data:
+        return jsonify({'error': 'Invalid request'}), 400
     term = data.get('term', '').strip()
 
     if not term:
@@ -83,7 +94,7 @@ def lookup_mobile():
         if result.get('success') and result.get('data', {}).get('status') == 'success':
             raw = result['data'].get('data', [])
             if not raw:
-                return jsonify({'success': False, 'error': 'No records found for this number'}), 404
+                return jsonify({'success': False, 'error': 'No records found for this number'})
 
             normalized = []
             for r in raw:
@@ -99,20 +110,22 @@ def lookup_mobile():
                 })
             return jsonify({'success': True, 'data': normalized, 'query': term, 'type': 'mobile'})
         else:
-            return jsonify({'success': False, 'error': 'No records found or API error'}), 404
+            return jsonify({'success': False, 'error': 'No records found or API error'})
 
     except http_requests.Timeout:
-        return jsonify({'error': 'Request timed out. The server took too long to respond.'}), 504
+        return jsonify({'success': False, 'error': 'Request timed out. Try again.'})
     except http_requests.ConnectionError:
-        return jsonify({'error': 'Could not connect to the lookup service.'}), 502
+        return jsonify({'success': False, 'error': 'Could not connect to the lookup service.'})
     except Exception as e:
-        return jsonify({'error': f'Unexpected error: {str(e)}'}), 500
+        return jsonify({'success': False, 'error': f'Unexpected error: {str(e)}'})
 
 
 @app.route('/api/lookup/id', methods=['POST'])
 @login_required
 def lookup_id():
     data = request.get_json()
+    if not data:
+        return jsonify({'error': 'Invalid request'}), 400
     term = data.get('term', '').strip()
 
     if not term:
@@ -130,7 +143,7 @@ def lookup_id():
         if result.get('success') and result.get('data', {}).get('status') == 'success':
             raw = result['data'].get('data', [])
             if not raw:
-                return jsonify({'success': False, 'error': 'No records found for this ID'}), 404
+                return jsonify({'success': False, 'error': 'No records found for this ID'})
 
             normalized = []
             seen = set()
@@ -151,14 +164,24 @@ def lookup_id():
                 })
             return jsonify({'success': True, 'data': normalized, 'query': term, 'type': 'id'})
         else:
-            return jsonify({'success': False, 'error': 'No records found or API error'}), 404
+            return jsonify({'success': False, 'error': 'No records found or API error'})
 
     except http_requests.Timeout:
-        return jsonify({'error': 'Request timed out. The server took too long to respond.'}), 504
+        return jsonify({'success': False, 'error': 'Request timed out. Try again.'})
     except http_requests.ConnectionError:
-        return jsonify({'error': 'Could not connect to the lookup service.'}), 502
+        return jsonify({'success': False, 'error': 'Could not connect to the lookup service.'})
     except Exception as e:
-        return jsonify({'error': f'Unexpected error: {str(e)}'}), 500
+        return jsonify({'success': False, 'error': f'Unexpected error: {str(e)}'})
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('index.html'), 200
+
+
+@app.errorhandler(500)
+def server_error(e):
+    return render_template('index.html'), 200
 
 
 if __name__ == '__main__':
